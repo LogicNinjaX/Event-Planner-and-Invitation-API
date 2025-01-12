@@ -160,7 +160,7 @@ mvn spring-boot:run](http://localhost:8080/swagger-ui.html)
 ```
 ---
 ## 🔗ER DIAGRAM
-![er_diagram](er_diagram.png)
+![er_diagram](/src/main/resources/er_diagram.png)
 ---
 ## Sample Endpoints
 ---
