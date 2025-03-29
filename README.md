@@ -41,7 +41,7 @@ An **Event Management System API** built with Spring Boot that allows event orga
 1. Clone the repository:
    ```bash
    git clone https://github.com/LogicNinjaX/Event-Planner-and-Invitation-API.git
-   cd event-management-system
+   cd Event-Planner-and-Invitation-API
 
 ```
 
