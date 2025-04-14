@@ -6,6 +6,8 @@ import com.example.demo.exception.OrganizerException;
 import com.example.demo.repository.OrganizerRepository;
 import com.example.demo.service.OrganizerService;
 import com.example.demo.util.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.Objects;
 
 @Service
 public class OrganizerSerImpl implements OrganizerService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrganizerSerImpl.class);
 
     @Autowired
     private OrganizerRepository repository;
