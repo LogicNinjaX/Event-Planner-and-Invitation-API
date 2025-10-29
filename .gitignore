@@ -34,3 +34,5 @@ build/
 
 app.evn
 .idea/workspace.xml
+src/main/resources/templates.sql
+src/main/resources/er_diagram.png
