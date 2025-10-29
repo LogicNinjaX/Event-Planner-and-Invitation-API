@@ -33,3 +33,4 @@ build/
 .vscode/
 
 app.evn
+.idea/workspace.xml
