@@ -1,33 +1,45 @@
-spring.application.name=demo
+spring:
+  application:
+       name: demo
 
-spring.datasource.url=jdbc:mysql://localhost:3306/spring
-spring.datasource.username=root
-spring.datasource.password=root
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+  datasource:
+       url: ${DB_URL}
+       username: ${DB_UNAME}
+       password: ${DB_PASS}
+       driver-class-name: ${DRIVER_CLASS}
 
 # Hibernate JPA properties
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-spring.jpa.properties.hibernate.highlight_sql=true
-
-# API Documentation Properties
-springdoc.api-docs.path=/v3/api-docs
-springdoc.swagger-ui.path=/swagger-ui.html
-
-# Metadata for API
-springdoc.info.title=User Management API
-springdoc.info.description=This API allows for managing user information.
-springdoc.info.version=1.0.0
-springdoc.info.contact.name=API Support
-springdoc.info.contact.email=support@company.com
+  jpa:
+         hibernate.ddl-auto: update
+         show-sql: true
+         properties:
+              hibernate:
+                    format_sql: true
+                    highlight_sql: true
 
 
+  mail:
+     host: ${SMTP_HOST}
+     port: ${SMTP_PORT}
+     username: ${SMTP_UNAME}
+     password: ${SMTP_PASS}
+     properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+               enable: true
 
-spring.mail.host= ${host}
-spring.mail.port= ${port}
-spring.mail.username= ${username}
-spring.mail.password= ${password}
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
-spring.mail.properties.mail.debug=true
+logging:
+  file:
+    name: logs/app.log
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXP} # in milliseconds
+
+app:
+  ip: ${HOST_IP}
+
+
+

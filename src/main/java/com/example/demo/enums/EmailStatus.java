@@ -1,4 +1,4 @@
-package com.example.demo.enumerated;
+package com.example.demo.enums;
 
 public enum EmailStatus {
     SENT,

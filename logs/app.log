@@ -1,0 +1,38 @@
+2025-10-27T20:09:27.498+05:30  INFO 20396 --- [demo] [main] com.example.demo.DemoApplication         : Starting DemoApplication using Java 22 with PID 20396 (D:\Spring Framework\Project 1\Event Planner and Invitation API\demo\target\classes started by mail.testmeee@gmail.com  in D:\Spring Framework\Project 1\Event Planner and Invitation API\demo)
+2025-10-27T20:09:27.502+05:30  INFO 20396 --- [demo] [main] com.example.demo.DemoApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-10-27T20:09:28.915+05:30  INFO 20396 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-27T20:09:29.032+05:30  INFO 20396 --- [demo] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 101 ms. Found 4 JPA repository interfaces.
+2025-10-27T20:09:29.967+05:30  INFO 20396 --- [demo] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-10-27T20:09:29.985+05:30  INFO 20396 --- [demo] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-10-27T20:09:29.985+05:30  INFO 20396 --- [demo] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-10-27T20:09:30.087+05:30  INFO 20396 --- [demo] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-10-27T20:09:30.087+05:30  INFO 20396 --- [demo] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2501 ms
+2025-10-27T20:09:30.188+05:30  INFO 20396 --- [demo] [main] com.example.demo.util.JwtTokenUtil       : JWT secret and expiration loaded.
+2025-10-27T20:09:30.383+05:30  INFO 20396 --- [demo] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-10-27T20:09:30.472+05:30  INFO 20396 --- [demo] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.4.Final
+2025-10-27T20:09:30.536+05:30  INFO 20396 --- [demo] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-10-27T20:09:30.971+05:30  INFO 20396 --- [demo] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-10-27T20:09:31.013+05:30  INFO 20396 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-10-27T20:09:31.499+05:30  INFO 20396 --- [demo] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@323efafe
+2025-10-27T20:09:31.503+05:30  INFO 20396 --- [demo] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-10-27T20:09:31.629+05:30  INFO 20396 --- [demo] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.36
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-10-27T20:09:33.120+05:30  INFO 20396 --- [demo] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-10-27T20:09:33.267+05:30  INFO 20396 --- [demo] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-10-27T20:09:33.913+05:30  INFO 20396 --- [demo] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-10-27T20:09:33.959+05:30  INFO 20396 --- [demo] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-10-27T20:09:35.718+05:30  WARN 20396 --- [demo] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-27T20:09:35.849+05:30  WARN 20396 --- [demo] [main] thorizationManagerRequestMatcherRegistry : One of the patterns in [/api/auth/**, /v3/api-docs/**, /swagger-ui/**, /swagger-ui.html, api/v1/update-rsvp/**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-10-27T20:09:36.805+05:30  INFO 20396 --- [demo] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-10-27T20:09:36.820+05:30  INFO 20396 --- [demo] [main] com.example.demo.DemoApplication         : Started DemoApplication in 10.317 seconds (process running for 10.973)
+2025-10-27T20:10:19.360+05:30  INFO 20396 --- [demo] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-10-27T20:10:19.376+05:30  INFO 20396 --- [demo] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-10-27T20:10:19.381+05:30  INFO 20396 --- [demo] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-10-27T20:10:19.390+05:30  INFO 20396 --- [demo] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-10-27T20:10:19.410+05:30  INFO 20396 --- [demo] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

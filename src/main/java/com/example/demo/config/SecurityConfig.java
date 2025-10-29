@@ -1,8 +1,9 @@
-package com.app.parking.config;
+package com.example.demo.config;
 
-import com.app.parking.security.JwtAuthenticationFilter;
-import com.app.parking.security.UserDetailsServiceImpl;
-import com.app.parking.util.JwtTokenUtil;
+
+import com.example.demo.security.JwtAuthenticationFilter;
+import com.example.demo.security.UserDetailsServiceImpl;
+import com.example.demo.util.JwtTokenUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,10 +34,11 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ).authorizeHttpRequests(auth ->
                         auth.requestMatchers(
-                              "/api/v1/auth/**",
+                              "/api/auth/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/swagger-ui.html"
+                                        "/swagger-ui.html",
+                                        "api/v1/update-rsvp/**"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 ).addFilterBefore(

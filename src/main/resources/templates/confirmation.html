@@ -1,10 +1,207 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP Confirmation</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .celebration-animation {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f39c12;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        .confetti:nth-child(1) { left: 10%; animation-delay: 0s; background: #e74c3c; }
+        .confetti:nth-child(2) { left: 20%; animation-delay: 0.5s; background: #3498db; }
+        .confetti:nth-child(3) { left: 30%; animation-delay: 1s; background: #2ecc71; }
+        .confetti:nth-child(4) { left: 40%; animation-delay: 1.5s; background: #f39c12; }
+        .confetti:nth-child(5) { left: 50%; animation-delay: 2s; background: #9b59b6; }
+        .confetti:nth-child(6) { left: 60%; animation-delay: 0.3s; background: #e67e22; }
+        .confetti:nth-child(7) { left: 70%; animation-delay: 0.8s; background: #1abc9c; }
+        .confetti:nth-child(8) { left: 80%; animation-delay: 1.3s; background: #e91e63; }
+        .confetti:nth-child(9) { left: 90%; animation-delay: 1.8s; background: #34495e; }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-$END$
-</body>
+<!-- Confetti Animation -->
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+
+<main style="max-width: 672px; margin: 0 auto; padding: 32px 16px; position: relative; z-index: 10;">
+    <div style="background: white; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 32px; text-align: center;" class="fade-in">
+        <!-- Success Icon -->
+        <div class="celebration-animation" style="margin-bottom: 24px;">
+            <div style="width: 96px; height: 96px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <svg style="width: 48px; height: 48px; color: #16a34a;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Main Message -->
+        <h1 style="font-size: 36px; font-weight: bold; color: #1f2937; margin-bottom: 16px;">🎉 You're All Set!</h1>
+        <p style="font-size: 20px; color: #4b5563; margin-bottom: 48px;">Thank you for confirming your attendance!</p>
+
+        <!-- Action Button -->
+        <div style="margin-bottom: 32px;">
+            <button onclick="addToCalendar()"
+                    style="background: #2563eb; color: white; font-weight: 600; padding: 16px 32px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s; width: 100%; font-size: 16px;"
+                    onmouseover="this.style.background='#1d4ed8'"
+                    onmouseout="this.style.background='#2563eb'">
+                📅 Add to Calendar
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: 32px;">
+        <p style="color: #6b7280; font-size: 14px; margin: 0;">
+            Can't attend anymore?
+            <a href="cancel-rsvp-api" onclick="cancelRSVP()" style="color: #dc2626; text-decoration: underline; transition: color 0.2s;"
+               onmouseover="this.style.color='#b91c1c'"
+               onmouseout="this.style.color='#dc2626'">Cancel your RSVP</a>
+        </p>
+    </div>
+</main>
+
+<script>
+    // Get URL parameters to populate event details
+    function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Populate event details from URL parameters
+    function populateEventDetails() {
+        const eventName = getUrlParameter('eventName') || 'Annual Company Celebration';
+        const eventDate = getUrlParameter('eventDate') || 'December 15, 2024';
+        const eventTime = getUrlParameter('eventTime') || '6:00 PM';
+        const eventLocation = getUrlParameter('eventLocation') || 'Grand Ballroom, Downtown Hotel';
+
+        document.getElementById('eventName').textContent = eventName;
+        document.getElementById('eventDate').textContent = eventDate;
+        document.getElementById('eventTime').textContent = eventTime;
+        document.getElementById('eventLocation').textContent = eventLocation;
+    }
+
+    // Add to calendar functionality
+    function addToCalendar() {
+        const eventName = document.getElementById('eventName').textContent;
+        const eventDate = document.getElementById('eventDate').textContent;
+        const eventTime = document.getElementById('eventTime').textContent;
+        const eventLocation = document.getElementById('eventLocation').textContent;
+
+        // Create a simple calendar event (this would typically integrate with calendar APIs)
+        const calendarData = {
+            title: eventName,
+            start: `${eventDate} ${eventTime}`,
+            location: eventLocation
+        };
+
+        // For demo purposes, show a message
+        showNotification('Calendar event created! Check your default calendar app.', 'success');
+    }
+
+
+
+    // Cancel RSVP functionality
+    function cancelRSVP() {
+        if (confirm('Are you sure you want to cancel your RSVP? We\'ll be sorry to miss you!')) {
+            // Here you would typically call an API to cancel the RSVP
+            showNotification('Your RSVP has been cancelled. We hope to see you at future events!', 'info');
+
+            // Optionally redirect after a delay
+            setTimeout(() => {
+                // window.location.href = 'cancellation-confirmation.html';
+            }, 2000);
+        }
+    }
+
+    // Show notification
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        const bgColor = type === 'success' ? '#f0fdf4' : type === 'error' ? '#fef2f2' : '#eff6ff';
+        const textColor = type === 'success' ? '#166534' : type === 'error' ? '#991b1b' : '#1e40af';
+        const borderColor = type === 'success' ? '#bbf7d0' : type === 'error' ? '#fecaca' : '#bfdbfe';
+
+        notification.style.cssText = `
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: ${bgColor};
+            color: ${textColor};
+            border: 1px solid ${borderColor};
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-width: 320px;
+            font-size: 14px;
+        `;
+
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        // Remove after 4 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 4000);
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+        populateEventDetails();
+    });
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'994b347667ea45af',t:'MTc2MTQ5NDgyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

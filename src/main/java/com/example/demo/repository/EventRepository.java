@@ -1,21 +1,45 @@
 package com.example.demo.repository;
 
+
 import com.example.demo.entity.Event;
-import com.example.demo.exception.EventException;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
 
-public interface EventRepository {
+import java.util.Optional;
+import java.util.UUID;
 
-    int saveEvent(int organizerId, Event event);
+public interface EventRepository extends JpaRepository<Event, UUID> {
 
-    Event getEvent(int organizerId, int eventId) throws EventException;
+    @Query("""
+            SELECT e FROM Event e
+            WHERE e.eventId = :eventId AND e.createdBy.userId = :organizerId
+            """)
+    Optional<Event> getEvent(UUID organizerId, UUID eventId);
 
-    void updateEvent(int organizerId, int eventId, Event event) throws EventException;
+    @Transactional
+    @Modifying
+    @Query("""
+            DELETE FROM Event e
+            WHERE e.eventId = :eventId AND e.createdBy.userId = :organizerId
+            """)
+    void deleteEvent(UUID organizerId, UUID eventId);
 
-    void patchEvent(int organizerId, int eventId, Event event) throws EventException;
+    @Query("""
+            SELECT e FROM Event e
+            WHERE e.createdBy.userId = :organizerId
+            """)
+    Page<Event> getAllEvents(Pageable pageable, UUID organizerId);
 
-    void deleteEvent(int organizerId, int eventId) throws Exception;
-
-    List<Event> getEvents(int organizerId, int pageNumber, int pageSize) throws EventException;
+    @Query("""
+            SELECT e FROM Event e
+            JOIN FETCH e.invitations i
+            JOIN FETCH i.user u
+            WHERE e.eventId = :eventId AND u.userId = :userId
+            """)
+    Optional<Event> getEventWhereGuestExist(UUID userId, UUID eventId);
 }

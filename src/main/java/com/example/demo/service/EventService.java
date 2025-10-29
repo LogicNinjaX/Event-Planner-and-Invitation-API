@@ -1,20 +1,21 @@
 package com.example.demo.service;
 
+
 import com.example.demo.dto.EventDto;
-import com.example.demo.exception.EventException;
+import com.example.demo.dto.request.EventSaveRequest;
+import com.example.demo.exception.custom_exception.EventNotFoundException;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface EventService {
-    int saveEvent(int organizer_id, EventDto eventDto);
 
-    EventDto getEvent(int organizerId, int eventId) throws EventException;
+    EventDto saveEvent(UUID organizerId, EventSaveRequest request);
 
-    void updateEvent(int organizerId, int eventId, EventDto eventDto) throws EventException;
+    EventDto getEvent(UUID organizerId, UUID eventId) throws EventNotFoundException;
 
-    void patchEvent(int organizerId, int eventId, EventDto eventDto) throws EventException;
+    void deleteEvent(UUID organizerId, UUID eventId);
 
-    void deleteEvent(int organizerId, int eventId) throws Exception;
-
-    List<EventDto> getEvents(int organizerId, int pageNumber, int pageSize) throws EventException;
+    List<EventDto> getEvents(UUID organizerId, Pageable pageable);
 }

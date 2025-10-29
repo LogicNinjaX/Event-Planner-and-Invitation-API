@@ -1,101 +1,103 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.EventDto;
-import com.example.demo.exception.EventException;
+import com.example.demo.dto.request.EventSaveRequest;
+import com.example.demo.dto.response.ApiResponse;
+import com.example.demo.entity.EventInvitation;
+import com.example.demo.enums.EmailStatus;
+import com.example.demo.security.CustomUserDetails;
+import com.example.demo.service.EmailService;
 import com.example.demo.service.EventService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.InvitationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/organizer")
+@RequestMapping(path = "/api/v1/events")
+@Tag(name = "Event and Invitation Management", description = "Endpoints related to invitation sending, event listing, deleting etc.")
 public class EventController {
 
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService;
+    private final InvitationService invitationService;
+    private final EmailService emailService;
 
-    @PostMapping("/{organizer-id}/events")
-    public ResponseEntity<Object> saveEvent(@PathVariable("organizer-id") int organizerId, @Valid @RequestBody EventDto eventDto) {
-        int id = eventService.saveEvent(organizerId, eventDto);
-        eventDto.setId(id);
-
-        Map<Object, Object> response = new LinkedHashMap<>();
-        response.put(ResponseBody.timestamp, LocalDateTime.now());
-        response.put(ResponseBody.status, HttpStatus.OK.value());
-        response.put(ResponseBody.message, "Event saved with id:" + eventDto.getId());
-        response.put(ResponseBody.data, eventDto);
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{organizer-id}/events/{event-id}")
-    public ResponseEntity<Object> getEvent(@PathVariable("organizer-id") int organizerId, @PathVariable("event-id") int eventId) throws EventException {
-        EventDto eventDto = eventService.getEvent(organizerId, eventId);
-        Map<Object, Object> response = new LinkedHashMap<>();
-        response.put(ResponseBody.timestamp, LocalDateTime.now());
-        response.put(ResponseBody.status, HttpStatus.OK.value());
-        response.put(ResponseBody.message, "Event found with eventId:" + eventId);
-        response.put(ResponseBody.data, eventDto);
-
-        return ResponseEntity.ok(response);
+    public EventController(EventService eventService, InvitationService invitationService, EmailService emailService) {
+        this.eventService = eventService;
+        this.invitationService = invitationService;
+        this.emailService = emailService;
     }
 
 
-    @PutMapping("/{organizer-id}/events/{event-id}")
-    public ResponseEntity<Object> updateEvent(@PathVariable("organizer-id") int organizerId, @PathVariable("event-id") int eventId, @Valid @RequestBody EventDto eventDto) throws EventException {
-        eventService.updateEvent(organizerId, eventId, eventDto);
-        Map<Object, Object> response = new LinkedHashMap<>();
-        response.put(ResponseBody.timestamp, LocalDateTime.now());
-        response.put(ResponseBody.status, HttpStatus.OK.value());
-        response.put(ResponseBody.message, "Event details updated with eventId:" + eventId);
-        response.put(ResponseBody.data, eventService.getEvent(organizerId, eventId));
-
-        return ResponseEntity.ok(response);
+    @Operation(summary = "Save event", description = "Returns saved event details with unique event id")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<EventDto>> saveEvent(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody EventSaveRequest request)
+    {
+        var savedEntity = eventService.saveEvent(userDetails.getUserId(), request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>("Event saved successfully", savedEntity));
     }
 
-    @PatchMapping("/{organizer-id}/events/{event-id}")
-    public ResponseEntity<Object> patchEvent(@PathVariable("organizer-id") int organizerId, @PathVariable("event-id") int eventId, @RequestBody EventDto eventDto) throws EventException {
-        eventService.patchEvent(organizerId, eventId, eventDto);
-
-        Map<Object, Object> response = new LinkedHashMap<>();
-        response.put(ResponseBody.timestamp, LocalDateTime.now());
-        response.put(ResponseBody.status, HttpStatus.OK.value());
-        response.put(ResponseBody.message, "Event details updated with eventId:" + eventId);
-        response.put(ResponseBody.data, eventService.getEvent(organizerId, eventId));
-
-        return ResponseEntity.ok(response);
+    @Operation(summary = "Get event by event id", description = "Returns event details created by organizer")
+    @GetMapping(path = "/{eventId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<EventDto>> getEvent(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable UUID eventId
+    )
+    {
+        var eventEntity = eventService.getEvent(userDetails.getUserId(), eventId);
+        return ResponseEntity.ok(new ApiResponse<>("Event fetched successfully", eventEntity));
     }
 
-    @DeleteMapping("/{organizer-id}/events/{event-id}")
-    public ResponseEntity<Object> deleteEvent(@PathVariable("organizer-id") int organizerId, @PathVariable("event-id") int eventId) throws Exception {
-        eventService.deleteEvent(organizerId, eventId);
-
-        Map<Object, Object> response = new LinkedHashMap<>();
-        response.put(ResponseBody.timestamp, LocalDateTime.now());
-        response.put(ResponseBody.status, HttpStatus.OK.value());
-        response.put(ResponseBody.message, "Event deleted with eventId:" + eventId);
-
-        return ResponseEntity.ok(response);
+    @Operation(summary = "Delete event by id", description = "Removes event record from database")
+    @DeleteMapping(path = "/{eventId}")
+    public ResponseEntity<Void> deleteEvent(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable UUID eventId
+    )
+    {
+        eventService.deleteEvent(userDetails.getUserId(), eventId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{organizer-id}/events")
-    public ResponseEntity<Object> getEvents(@PathVariable("organizer-id") int organizerId, @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) throws EventException {
+   @Operation(summary = "Get list of events created by user", description = "Returns event details in pages")
+   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<ApiResponse<?>> getAllEvents(
+           @AuthenticationPrincipal CustomUserDetails userDetails,
+           Pageable pageable
+   )
+   {
+        var events = eventService.getEvents(userDetails.getUserId(), pageable);
+        return ResponseEntity.ok(new ApiResponse<>("events fetched successfully", events));
+   }
 
-        List<EventDto> eventDtoList = eventService.getEvents(organizerId, pageNumber, pageSize);
 
-        Map<Object, Object> response = new LinkedHashMap<>();
-        response.put(ResponseBody.timestamp, LocalDateTime.now());
-        response.put(ResponseBody.status, HttpStatus.OK.value());
-        response.put(ResponseBody.message, "Page No:"+pageNumber+" Page Size:"+pageSize);
-        response.put(ResponseBody.data, eventDtoList);
-        return ResponseEntity.ok(response);
-    }
+   @Operation(summary = "Get invitation details", description = "Returns invitation details associated with event")
+   @GetMapping(path = "/{eventId}/invitations", produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<ApiResponse<?>> getInvitationDetails(@PathVariable UUID eventId, Pageable pageable){
+        var invitationList = invitationService.getInvitationsWithGuest(eventId, pageable);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>("event details fetched successfully", invitationList));
+   }
+
+   @Operation(summary = "Send invitation", description = "Sends invitation message to user email")
+   @PostMapping(path = "/{eventId}/invitations")
+   public ResponseEntity<Void> sendInvitation(@PathVariable UUID eventId, @RequestParam String email){
+        EventInvitation invitation = invitationService.createInvitation(email, eventId);
+        emailService.sendInvitationEmail(invitation);
+        invitationService.updateEmailStatus(invitation.getInvitationId(), EmailStatus.SENT);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+   }
+
 
 }

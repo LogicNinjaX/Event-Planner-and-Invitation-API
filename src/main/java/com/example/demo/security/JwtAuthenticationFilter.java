@@ -1,6 +1,6 @@
-package com.app.parking.security;
+package com.example.demo.security;
 
-import com.app.parking.util.JwtTokenUtil;
+import com.example.demo.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

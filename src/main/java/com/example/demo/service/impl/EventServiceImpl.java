@@ -1,79 +1,74 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.EventDto;
+import com.example.demo.dto.request.EventSaveRequest;
 import com.example.demo.entity.Event;
-import com.example.demo.exception.EventException;
+import com.example.demo.entity.User;
+import com.example.demo.exception.custom_exception.EventNotFoundException;
+import com.example.demo.exception.custom_exception.UserNotFoundException;
 import com.example.demo.repository.EventRepository;
+import com.example.demo.repository.InvitationRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.EventService;
-import com.example.demo.util.Mapper;
-import jakarta.persistence.Entity;
-import jakarta.persistence.NoResultException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.util.mapper.EventMapper;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
-public class EventSerImpl implements EventService {
+public class EventServiceImpl implements EventService {
 
-    @Autowired
-    private EventRepository repository;
+    private final EventRepository eventRepository;
+    private final UserRepository userRepository;
+    private final EventMapper eventMapper;
+    private final InvitationRepository invitationRepository;
+    private static final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
+
+    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository, EventMapper eventMapper, InvitationRepository invitationRepository) {
+        this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
+        this.eventMapper = eventMapper;
+        this.invitationRepository = invitationRepository;
+    }
+
 
     @Override
-    public int saveEvent(int organizer_id, EventDto eventDto) {
-        return repository.saveEvent(organizer_id, Mapper.eventDtoToEntity(eventDto));
+    public EventDto saveEvent(UUID organizerId, EventSaveRequest request) {
+        User organizer = userRepository.findById(organizerId).orElseThrow(() -> new UserNotFoundException(organizerId.toString()));
+        Event event = eventMapper.toEvent(request);
+        event.setCreatedBy(organizer);
+        event = eventRepository.save(event);
+        logger.info("Event with id: {} saved successfully", event.getEventId());
+        return eventMapper.toDto(event);
+    }
+
+
+    @Override
+    public EventDto getEvent(UUID organizerId, UUID eventId) throws EventNotFoundException {
+        Event event = eventRepository.getEvent(organizerId, eventId)
+                .orElseThrow(() -> new EventNotFoundException(eventId.toString()));
+
+        logger.info("Event with id: {} fetched successfully", eventId);
+        return eventMapper.toDto(event);
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteEvent(UUID organizerId, UUID eventId) {
+        invitationRepository.deleteByEventId(eventId);
+        eventRepository.deleteEvent(organizerId, eventId);
+        logger.info("Event record deleted successfully");
     }
 
     @Override
-    public EventDto getEvent(int organizerId, int eventId) throws EventException {
-        return Mapper.eventEntityToDto(repository.getEvent(organizerId, eventId));
-    }
-
-    @Override
-    public void updateEvent(int organizerId, int eventId, EventDto eventDto) throws EventException {
-        repository.updateEvent(organizerId, eventId, Mapper.eventDtoToEntity(eventDto));
-    }
-
-    @Override
-    public void patchEvent(int organizerId, int eventId, EventDto eventDto) throws EventException {
-        Event event = new Event();
-
-        if (Objects.nonNull(eventDto.getEvent_name())) {
-            event.setEventName(eventDto.getEvent_name());
-        }
-
-        if (Objects.nonNull(eventDto.getDate())) {
-            event.setDate(eventDto.getDate());
-        }
-
-        if (Objects.nonNull(eventDto.getTime())) {
-            event.setTime(eventDto.getTime());
-        }
-
-        if (Objects.nonNull(eventDto.getLocation())) {
-            event.setLocation(eventDto.getLocation());
-        }
-
-        repository.patchEvent(organizerId, eventId, event);
-    }
-
-    @Override
-    public void deleteEvent(int organizerId, int eventId) throws Exception {
-        repository.deleteEvent(organizerId, eventId);
-    }
-
-    @Override
-    public List<EventDto> getEvents(int organizerId, int pageNumber, int pageSize) throws EventException {
-        try {
-            return repository.getEvents(organizerId,pageNumber,pageSize)
-                    .stream()
-                    .map(Mapper::eventEntityToDto)
-                    .collect(Collectors.toList());
-
-        }catch (EventException exception){
-            throw new EventException("error occurred");
-        }
+    public List<EventDto> getEvents(UUID organizerId, Pageable pageable){
+        return eventRepository.getAllEvents(pageable, organizerId)
+                .stream().map(eventMapper::toDto).toList();
     }
 }

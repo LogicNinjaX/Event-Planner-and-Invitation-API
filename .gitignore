@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-app.env
+app.evn

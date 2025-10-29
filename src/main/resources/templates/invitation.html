@@ -1,10 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Invitation</title>
 </head>
-<body>
-$END$
+
+<body
+        style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; box-sizing: border-box;">
+<table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f4f7f9;">
+    <tr>
+        <td style="padding: 40px 20px;">
+            <table role="presentation"
+                   style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+
+                <!-- Header with gradient -->
+                <tr>
+                    <td
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 40px; text-align: center;">
+                        <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">You're
+                            Invited!</h1>
+                        <div
+                                style="width: 60px; height: 4px; background-color: #ffd700; margin: 20px auto 0; border-radius: 2px;">
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Host Name -->
+                <tr>
+                    <td style="padding: 40px 40px 20px; text-align: center;">
+                        <p
+                                style="margin: 0; color: #667eea; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+                            Hosted By</p>
+                        <h2 style="margin: 10px 0 0; color: #2d3748; font-size: 24px; font-weight: 700;" th:text="${senderName}">
+                            Sarah Johnson</h2>
+                    </td>
+                </tr>
+
+                <!-- Divider -->
+                <tr>
+                    <td style="padding: 0 40px;">
+                        <div style="height: 1px; background: linear-gradient(to right, transparent, #e2e8f0, transparent);"></div>
+                    </td>
+                </tr>
+
+                <!-- Guest Name -->
+                <tr>
+                    <td style="padding: 30px 40px 20px; text-align: center;">
+                        <p style="margin: 0; color: #718096; font-size: 16px;">Dear</p>
+                        <h3 style="margin: 8px 0 0; color: #2d3748; font-size: 22px; font-weight: 600;" th:text="${guestName}">
+                            Michael Anderson</h3>
+                    </td>
+                </tr>
+
+                <!-- Event Purpose -->
+                <tr>
+                    <td style="padding: 10px 40px 30px; text-align: center;">
+                        <p style="margin: 0; color: #4a5568; font-size: 16px; line-height: 1.6;">We would be delighted to have you
+                            join us for</p>
+                    </td>
+                </tr>
+
+                <!-- Event Name Box -->
+                <tr>
+                    <td style="padding: 0 40px 30px;">
+                        <div
+                                style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 25px; border-radius: 12px; text-align: center;">
+                            <h2 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700;" th:text="${eventName}">Summer
+                                Garden Party</h2>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Event Details Grid -->
+                <tr>
+                    <td style="padding: 0 40px 30px;">
+                        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                            <!-- Date & Time Row -->
+                            <tr>
+                                <td
+                                        style="width: 50%; padding: 15px; background-color: #fef5e7; border-radius: 8px; vertical-align: top;">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 28px; margin-bottom: 8px;">📅</div>
+                                        <p
+                                                style="margin: 0; color: #f39c12; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Date</p>
+                                        <p style="margin: 5px 0 0; color: #2d3748; font-size: 16px; font-weight: 600;"
+                                           th:text="${eventDate}">June 15, 2024</p>
+                                    </div>
+                                </td>
+                                <td style="width: 10px;"></td>
+                                <td
+                                        style="width: 50%; padding: 15px; background-color: #e8f5e9; border-radius: 8px; vertical-align: top;">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 28px; margin-bottom: 8px;">⏰</div>
+                                        <p
+                                                style="margin: 0; color: #27ae60; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Time</p>
+                                        <p style="margin: 5px 0 0; color: #2d3748; font-size: 16px; font-weight: 600;"
+                                           th:text="${eventTime}">6:00 PM</p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Location Row -->
+                            <tr>
+                                <td colspan="3" style="padding-top: 15px;">
+                                    <div style="padding: 20px; background-color: #e3f2fd; border-radius: 8px; text-align: center;">
+                                        <div style="font-size: 28px; margin-bottom: 8px;">📍</div>
+                                        <p
+                                                style="margin: 0; color: #2196f3; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Location</p>
+                                        <p style="margin: 5px 0 0; color: #2d3748; font-size: 16px; font-weight: 600; line-height: 1.5;"
+                                           th:text="${eventLocation}">The Grand Ballroom, 123 Main Street, New York, NY 10001</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Event Description -->
+                <tr>
+                    <td style="padding: 0 40px 30px;">
+                        <div
+                                style="background-color: #f7fafc; padding: 20px; border-left: 4px solid #667eea; border-radius: 8px;">
+                            <p style="margin: 0; color: #4a5568; font-size: 15px; line-height: 1.7;" th:text="${eventDescription}">
+                                Join us for an evening of delightful conversation, delicious food, and wonderful company. We'll have
+                                live music, outdoor games, and a beautiful sunset view. Dress code: Smart casual.</p>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- RSVP Section -->
+                <tr>
+                    <td style="padding: 0 40px 30px;">
+                        <div
+                                style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 25px; border-radius: 12px; text-align: center;">
+                            <p
+                                    style="margin: 0 0 8px; color: #ffffff; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+                                Please RSVP By</p>
+                            <p style="margin: 0; color: #ffffff; font-size: 22px; font-weight: 700;" th:text="${rsvpDate}">June 8,
+                                2024</p>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- RSVP Button -->
+                <tr>
+                    <td style="padding: 0 40px 40px; text-align: center;">
+                        <a th:href="${rsvpLink}" href="#"
+                           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 16px 50px; border-radius: 50px; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.2s;">
+                            Confirm Attendance
+                        </a>
+                        <p style="margin: 15px 0 0; color: #718096; font-size: 13px;">Click the button above to let us know you're
+                            coming!</p>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td
+                            style="background-color: #f7fafc; padding: 30px 40px; text-align: center; border-top: 1px solid #e2e8f0;">
+                        <p style="margin: 0 0 10px; color: #4a5568; font-size: 14px; line-height: 1.6;">We can't wait to celebrate
+                            with you!</p>
+                        <p style="margin: 0; color: #a0aec0; font-size: 12px;">If you have any questions, please don't hesitate to
+                            reach out.</p>
+                    </td>
+                </tr>
+
+            </table>
+
+            <!-- Email Footer -->
+            <table role="presentation" style="max-width: 600px; margin: 20px auto 0;">
+                <tr>
+                    <td style="text-align: center; padding: 20px;">
+                        <p style="margin: 0; color: #a0aec0; font-size: 12px;">This is an invitation email. Please respond by the
+                            RSVP date.</p>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>
+<script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9947d2f6836b5959',t:'MTc2MTQ1OTM3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
+
 </html>

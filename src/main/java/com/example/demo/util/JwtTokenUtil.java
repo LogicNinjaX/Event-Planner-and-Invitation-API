@@ -1,8 +1,7 @@
-package com.app.parking.util;
+package com.example.demo.util;
 
-
-import com.app.parking.config.JwtConfig;
-import com.app.parking.security.CustomUserDetails;
+import com.example.demo.config.JwtConfig;
+import com.example.demo.security.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;

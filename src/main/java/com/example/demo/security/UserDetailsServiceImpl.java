@@ -1,7 +1,8 @@
-package com.app.parking.security;
+package com.example.demo.security;
 
-import com.app.parking.entity.User;
-import com.app.parking.repository.UserRepository;
+
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+user.getRole().name()));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+user.getUserRole().name()));
 
-        return new CustomUserDetails(user.getUserId(), user.getUsername(), user.getPassword(), user.getRole(), authorities);
+        return new CustomUserDetails(user.getUserId(), user.getUsername(), user.getPassword(), user.getUserRole(), authorities);
     }
 }

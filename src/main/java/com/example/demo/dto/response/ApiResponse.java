@@ -1,4 +1,4 @@
-package com.app.parking.dto.response;
+package com.example.demo.dto.response;
 
 import java.time.LocalDateTime;
 
@@ -8,8 +8,8 @@ public class ApiResponse<T> {
     private T data;
     private LocalDateTime timestamp;
 
-    public ApiResponse(Boolean success, String message, T data) {
-        this.success = success;
+    public ApiResponse(String message, T data) {
+        this.success = true;
         this.message = message;
         this.data = data;
         this.timestamp = LocalDateTime.now();

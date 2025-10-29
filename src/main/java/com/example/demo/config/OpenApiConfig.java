@@ -1,4 +1,4 @@
-package com.app.parking.config;
+package com.example.demo.config;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -25,9 +25,9 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("P2P Parking Api")
+                                .title("Event Planner and Invitation Api")
                                 .version("1.0")
-                                .description("Api Documentation for parking system")
+                                .description("Api Documentation for Invitation System")
                 ).addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 }

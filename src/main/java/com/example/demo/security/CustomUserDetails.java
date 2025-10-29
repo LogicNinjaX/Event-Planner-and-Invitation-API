@@ -1,6 +1,6 @@
-package com.app.parking.security;
+package com.example.demo.security;
 
-import com.app.parking.enums.UserRole;
+import com.example.demo.enums.Roles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,14 +12,14 @@ public class CustomUserDetails implements UserDetails {
     private UUID userId;
     private String username;
     private String password;
-    private UserRole role;
+    private Roles role;
     private Collection<? extends GrantedAuthority> authorities;
 
 
     public CustomUserDetails() {
     }
 
-    public CustomUserDetails(UUID userId, String username, String password, UserRole role, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(UUID userId, String username, String password, Roles role, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -78,11 +78,11 @@ public class CustomUserDetails implements UserDetails {
         this.password = password;
     }
 
-    public UserRole getRole() {
+    public Roles getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Roles role) {
         this.role = role;
     }
 
